@@ -1,5 +1,5 @@
 <?php
-    require_once("config.php");
+    require_once "./config/config.php";
     session_start();
     $select = "SELECT * FROM `villagers`";
     $query = $link -> prepare($select);
@@ -11,23 +11,23 @@
         foreach ($result as $row) {
             $status = $row['status--villager'];
             if( $login == $row['login-villager']){
-                echo 'eeee';
+                print_r($_GET);
                 if($status == 1){
                     $_SESSION['user'] = 'Губернатор';
-                    header('Location: governorPage.php');
+                    header('Location: pages/governorPage.php');
                 }
                 else if($status == 2){
                     $_SESSION['user'] = 'Мэр';
-                    header('Location: mayorPage.php');
+                    $_SESSION['login'] = $_POST['login'];
+                    header('Location: pages/mayorPage.php');
                 }
                 else if($status == 3){
                     $_SESSION['user'] = 'Житель';
-                    header('Location: villagerPage.php');
+                    $_SESSION['login'] = $_POST['login'];
+                    header('Location: pages/villagerPage.php');
                 }
                 else{
                     session_destroy();
-                    session_start();
-                    $_SESSION['user'] = $login;
                     header('Location: /');
                 }
             }
